@@ -2,25 +2,18 @@
 "use strict";
 
 /* ==========================================
-   LOVE STORY — DINH HUYNH NGOC PHUNG
-   FULL JAVASCRIPT
+   LOVE STORY — K ♡ P
+   FULL JAVASCRIPT / MOBILE OPTIMIZED
 ========================================== */
 
-/*
-   CHỈNH NGÀY BẮT ĐẦU YÊU NHAU TẠI ĐÂY
-   month: từ 1 đến 12
-*/
-
+/* Ngày bắt đầu yêu: 01/10/2026 */
 const LOVE_DATE = {
     year: 2026,
     month: 10,
     day: 1
 };
 
-/* ==========================================
-   SINH NHẬT NGỌC PHỤNG
-========================================== */
-
+/* Sinh nhật Ngọc Phụng: 06/01 */
 const BIRTHDAY = {
     month: 1,
     day: 6
@@ -54,19 +47,17 @@ document.addEventListener("DOMContentLoaded", () => {
         "(prefers-reduced-motion: reduce)"
     );
 
+    const isMobile = window.matchMedia(
+        "(max-width: 600px)"
+    );
+
     let currentSlide = 0;
     let currentPhoto = 0;
-
-    let touchStartX = 0;
-    let touchStartY = 0;
-
-    let photoTouchX = 0;
-    let photoTouchY = 0;
 
     let letterTimeout = null;
 
     /* ======================================
-       6 WEBP IMAGES
+       6 WEBP PHOTOS
     ====================================== */
 
     const photos = [
@@ -79,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     /* ======================================
-       CREATE NAVIGATION DOTS
+       CREATE DOTS
     ====================================== */
 
     slides.forEach((slide, index) => {
@@ -111,9 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (
             index < 0 ||
-            index >= slides.length ||
-            index === currentSlide &&
-            slides[index].getAttribute("aria-hidden") === "false"
+            index >= slides.length
         ) {
             return;
         }
@@ -222,34 +211,70 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /* ======================================
-       MOBILE SLIDE SWIPE
+       MOBILE SWIPE — SMOOTH & ACCURATE
     ====================================== */
+
+    let swipeStartX = 0;
+    let swipeStartY = 0;
+    let swipeStartTime = 0;
+    let swipeTracking = false;
+    let swipeLocked = false;
 
     document.addEventListener("touchstart", event => {
 
         if (isOverlayOpen()) return;
+        if (event.touches.length !== 1) return;
 
-        const touch = event.changedTouches[0];
+        const target = event.target;
 
-        touchStartX = touch.screenX;
-        touchStartY = touch.screenY;
+        if (
+            target.closest(
+                "button, a, input, textarea, select, .photo-grid, .letter-modal, .lightbox"
+            )
+        ) {
+            swipeTracking = false;
+            return;
+        }
+
+        const touch = event.touches[0];
+
+        swipeStartX = touch.clientX;
+        swipeStartY = touch.clientY;
+        swipeStartTime = performance.now();
+        swipeTracking = true;
 
     }, { passive: true });
 
     document.addEventListener("touchend", event => {
 
+        if (!swipeTracking || swipeLocked) return;
+
+        swipeTracking = false;
+
         if (isOverlayOpen()) return;
 
         const touch = event.changedTouches[0];
 
-        const deltaX = touch.screenX - touchStartX;
-        const deltaY = touch.screenY - touchStartY;
+        const deltaX = touch.clientX - swipeStartX;
+        const deltaY = touch.clientY - swipeStartY;
 
-        const horizontalSwipe =
-            Math.abs(deltaX) > 65 &&
-            Math.abs(deltaX) > Math.abs(deltaY) * 1.3;
+        const duration = performance.now() - swipeStartTime;
 
-        if (!horizontalSwipe) return;
+        const distance = Math.abs(deltaX);
+        const verticalDistance = Math.abs(deltaY);
+
+        const isHorizontal =
+            distance > 55 &&
+            distance > verticalDistance * 1.5;
+
+        const isQuickSwipe =
+            duration < 450 && distance > 45;
+
+        if (!isHorizontal && !isQuickSwipe) return;
+
+        if (verticalDistance > distance) return;
+
+        swipeLocked = true;
 
         if (deltaX < 0) {
             showSlide(currentSlide + 1);
@@ -257,6 +282,14 @@ document.addEventListener("DOMContentLoaded", () => {
             showSlide(currentSlide - 1);
         }
 
+        setTimeout(() => {
+            swipeLocked = false;
+        }, 350);
+
+    }, { passive: true });
+
+    document.addEventListener("touchcancel", () => {
+        swipeTracking = false;
     }, { passive: true });
 
     /* ======================================
@@ -398,6 +431,9 @@ document.addEventListener("DOMContentLoaded", () => {
        MOBILE PHOTO SWIPE
     ====================================== */
 
+    let photoTouchX = 0;
+    let photoTouchY = 0;
+
     lightbox.addEventListener("touchstart", event => {
 
         const touch = event.changedTouches[0];
@@ -482,11 +518,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function updateLoveTime() {
 
-        const now = Date.now();
-
         const difference = Math.max(
             0,
-            now - startDate.getTime()
+            Date.now() - startDate.getTime()
         );
 
         const totalSeconds =
@@ -545,9 +579,7 @@ document.addEventListener("DOMContentLoaded", () => {
         heart.className = "floating-heart";
 
         heart.textContent = heartSymbols[
-            Math.floor(
-                Math.random() * heartSymbols.length
-            )
+            Math.floor(Math.random() * heartSymbols.length)
         ];
 
         heart.style.left =
@@ -578,10 +610,6 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ======================================
        OPTIMIZED HEART SPAWNING
     ====================================== */
-
-    const isMobile = window.matchMedia(
-        "(max-width: 600px)"
-    );
 
     setInterval(() => {
 
