@@ -1,7 +1,7 @@
 
 /* ==========================================
-   LOVE STORY — DINH HUYNH NGOC PHUNG
-   FULL RESPONSIVE STYLESHEET
+   LOVE STORY — K ♡ P
+   FULL RESPONSIVE CSS
 ========================================== */
 
 :root {
@@ -26,11 +26,17 @@ body {
     height: 100%;
 }
 
+html {
+    -webkit-text-size-adjust: 100%;
+    touch-action: manipulation;
+}
+
 body {
     font-family: "Be Vietnam Pro", Arial, sans-serif;
     color: var(--text);
     background: #fff0f5;
     overflow: hidden;
+    overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -66,7 +72,8 @@ button:focus-visible {
     bottom: -40px;
     color: var(--pink);
     opacity: .6;
-    will-change: transform;
+    pointer-events: none;
+    will-change: transform, opacity;
     animation: floatUp linear forwards;
 }
 
@@ -126,25 +133,28 @@ button:focus-visible {
 ========================================== */
 
 #slides {
+    position: relative;
     width: 100%;
     height: 100vh;
     height: 100dvh;
-    position: relative;
+    overflow: hidden;
 }
 
 .slide {
     position: absolute;
     inset: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
     padding: 95px 20px 105px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
 
     background:
         radial-gradient(
@@ -161,12 +171,15 @@ button:focus-visible {
 
     opacity: 0;
     visibility: hidden;
-    transform: translate3d(35px, 0, 0);
+    transform: translate3d(25px, 0, 0);
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 
     transition:
-        opacity .4s ease,
-        transform .4s ease,
-        visibility .4s;
+        opacity 350ms cubic-bezier(.22, 1, .36, 1),
+        transform 350ms cubic-bezier(.22, 1, .36, 1),
+        visibility 350ms;
 
     pointer-events: none;
 }
@@ -182,8 +195,8 @@ button:focus-visible {
 .slide-content {
     width: 100%;
     max-width: 850px;
-    text-align: center;
     margin: auto;
+    text-align: center;
 }
 
 .slide-content.wide {
@@ -191,13 +204,13 @@ button:focus-visible {
 }
 
 .slide.active .slide-content {
-    animation: appear .5s ease both;
+    animation: appear 350ms ease both;
 }
 
 @keyframes appear {
     from {
         opacity: 0;
-        transform: translateY(15px);
+        transform: translateY(12px);
     }
 
     to {
@@ -290,11 +303,7 @@ h2 em {
     border: 0;
     padding: 17px 30px;
     border-radius: 50px;
-    background: linear-gradient(
-        135deg,
-        #ff80a9,
-        #ed477f
-    );
+    background: linear-gradient(135deg, #ff80a9, #ed477f);
     color: white;
     font-size: 14px;
     font-weight: 700;
@@ -359,13 +368,7 @@ h2 em {
     position: absolute;
     inset: 0;
     background: #ffbfd1;
-    clip-path: polygon(
-        0 0,
-        50% 55%,
-        100% 0,
-        100% 100%,
-        0 100%
-    );
+    clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
     border-radius: 8px;
 }
 
@@ -544,6 +547,8 @@ h2 em {
     object-position: center;
     background: linear-gradient(145deg, #fff1f6, #ffe1ed);
     border-radius: 12px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     transition: transform .4s ease;
 }
 
@@ -603,6 +608,41 @@ h2 em {
     line-height: 1.9;
     font-style: italic;
     color: #945873;
+}
+
+/* ==========================================
+   BIRTHDAY NOTE
+========================================== */
+
+.birthday-note {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    width: fit-content;
+    max-width: 100%;
+    margin: 22px auto;
+    padding: 15px 25px;
+    border: 1px solid #ffd0e0;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, .85);
+    box-shadow: 0 10px 30px rgba(220, 75, 130, .12);
+}
+
+.birthday-note span {
+    font-size: 23px;
+}
+
+.birthday-note p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #9a647c;
+}
+
+.birthday-note strong {
+    display: block;
+    font-size: 19px;
+    color: #e44d87;
 }
 
 /* ==========================================
@@ -791,6 +831,15 @@ h2 em {
 
     .slide {
         padding: 80px 18px 95px;
+        transform: translate3d(18px, 0, 0);
+        transition:
+            opacity 300ms ease,
+            transform 300ms ease,
+            visibility 300ms;
+    }
+
+    .slide.active {
+        transform: translate3d(0, 0, 0);
     }
 
     h1 {
@@ -823,6 +872,7 @@ h2 em {
     .reason-card {
         padding: 15px 12px;
         border-radius: 15px;
+        box-shadow: 0 5px 16px rgba(180, 66, 111, .10);
     }
 
     .reason-card h3 {
@@ -833,7 +883,7 @@ h2 em {
         font-size: 11px;
     }
 
-    /* PORTRAIT ALBUM */
+    /* MOBILE PORTRAIT ALBUM */
 
     .photo-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -845,6 +895,7 @@ h2 em {
     .photo-card {
         padding: 6px 6px 11px;
         border-radius: 14px;
+        box-shadow: 0 6px 18px rgba(157, 59, 99, .12);
     }
 
     .photo-card img {
@@ -860,7 +911,7 @@ h2 em {
         margin-top: 8px;
     }
 
-    /* TIMER */
+    /* MOBILE TIMER */
 
     .time-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -870,6 +921,7 @@ h2 em {
 
     .time-box {
         padding: 18px 10px;
+        box-shadow: 0 5px 16px rgba(180, 66, 111, .10);
     }
 
     .quote-card {
@@ -877,7 +929,22 @@ h2 em {
         font-size: 12px;
     }
 
-    /* LETTER */
+    /* MOBILE BIRTHDAY */
+
+    .birthday-note {
+        padding: 12px 16px;
+        gap: 8px;
+    }
+
+    .birthday-note p {
+        font-size: 11px;
+    }
+
+    .birthday-note strong {
+        font-size: 16px;
+    }
+
+    /* MOBILE LETTER */
 
     .letter-card {
         padding: 35px 23px;
@@ -912,6 +979,9 @@ h2 em {
     .lightbox {
         padding: 55px 10px;
         gap: 5px;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: rgba(20, 8, 16, .97);
     }
 
     .lightbox img {
@@ -942,6 +1012,16 @@ h2 em {
         top: max(15px, env(safe-area-inset-top));
         right: 18px;
         z-index: 3;
+    }
+
+    .primary-btn:hover,
+    .envelope:hover,
+    .reason-card:hover {
+        transform: none;
+    }
+
+    .slide.active .slide-content {
+        animation-duration: 300ms;
     }
 }
 
@@ -1007,53 +1087,5 @@ h2 em {
     *::after {
         animation-duration: .01ms !important;
         transition-duration: .01ms !important;
-    }
-}
-
-/* SINH NHẬT NGỌC PHỤNG */
-
-.birthday-note {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 14px;
-    width: fit-content;
-    max-width: 100%;
-    margin: 22px auto;
-    padding: 15px 25px;
-    border: 1px solid #ffd0e0;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, .85);
-    box-shadow: 0 10px 30px rgba(220, 75, 130, .12);
-}
-
-.birthday-note span {
-    font-size: 23px;
-}
-
-.birthday-note p {
-    font-size: 13px;
-    line-height: 1.8;
-    color: #9a647c;
-}
-
-.birthday-note strong {
-    display: block;
-    font-size: 19px;
-    color: #e44d87;
-}
-
-@media (max-width: 600px) {
-    .birthday-note {
-        padding: 12px 16px;
-        gap: 8px;
-    }
-
-    .birthday-note p {
-        font-size: 11px;
-    }
-
-    .birthday-note strong {
-        font-size: 16px;
     }
 }
