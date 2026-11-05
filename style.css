@@ -1089,3 +1089,149 @@ h2 em {
         transition-duration: .01ms !important;
     }
 }
+
+
+/* ==========================================
+   CINEMATIC CONFESSION
+========================================== */
+
+.confession-label {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: var(--pink-dark);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+.surprise-message {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(243, 91, 145, .18);
+    background:
+        radial-gradient(circle at 50% 0%, rgba(255, 190, 215, .25), transparent 45%),
+        rgba(255, 255, 255, .88);
+}
+
+.surprise-message::before {
+    content: "♡";
+    position: absolute;
+    top: -38px;
+    right: 20px;
+    font-family: "Dancing Script", cursive;
+    font-size: 130px;
+    color: rgba(243, 91, 145, .06);
+    pointer-events: none;
+}
+
+.confession-lines {
+    position: relative;
+    z-index: 1;
+}
+
+.reveal-line {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+    transition:
+        opacity .7s ease,
+        transform .7s cubic-bezier(.22, 1, .36, 1),
+        filter .7s ease;
+}
+
+.reveal-line.revealed {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+.confession-main {
+    margin: 25px 0 !important;
+    font-family: "Dancing Script", cursive;
+    font-size: clamp(30px, 6vw, 43px) !important;
+    line-height: 1.3 !important;
+    color: var(--pink-dark);
+}
+
+.confession-main strong {
+    display: inline-block;
+    color: var(--pink-dark);
+    animation: confessionGlow 2.4s ease-in-out infinite;
+}
+
+@keyframes confessionGlow {
+    0%, 100% {
+        transform: scale(1);
+        text-shadow: 0 0 0 rgba(243, 91, 145, 0);
+    }
+    50% {
+        transform: scale(1.035);
+        text-shadow: 0 8px 30px rgba(243, 91, 145, .25);
+    }
+}
+
+.confession-question {
+    margin-top: 24px !important;
+    padding: 18px 16px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(255, 228, 237, .72), rgba(255, 255, 255, .72));
+    border: 1px solid rgba(243, 91, 145, .14);
+}
+
+.confession-question strong {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.confession-soft {
+    color: #8f6a7c;
+}
+
+.confession-signature {
+    position: relative;
+    z-index: 1;
+    margin-top: 22px;
+    font-family: "Dancing Script", cursive;
+    font-size: 28px;
+    color: var(--pink-dark);
+}
+
+@media (max-width: 600px) {
+    .surprise-message {
+        max-height: 58dvh;
+        overflow-y: auto;
+        padding: 24px 18px;
+        border-radius: 20px;
+    }
+
+    .confession-label {
+        font-size: 8px;
+        letter-spacing: 2px;
+    }
+
+    .confession-main {
+        font-size: 32px !important;
+    }
+
+    .confession-question strong {
+        font-size: 14px;
+    }
+
+    .confession-signature {
+        font-size: 25px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal-line {
+        opacity: 1;
+        transform: none;
+        filter: none;
+    }
+
+    .confession-main strong {
+        animation: none;
+    }
+}
